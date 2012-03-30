@@ -49,4 +49,26 @@ describe Post do
     it.title.must_equal "mytitle"
     it.body.must_equal "mybody"
   end
+
+  describe "#pubdate" do
+    describe "before publishing" do
+      it "is blank" do
+        subject.pubdate.must_be_nil
+      end
+    end
+
+    describe "after publishing" do
+      before do
+        @clock = stub!
+        @now = DateTime.parse("2011-09-11T02:56")
+        stub(@clock).now(){@now}
+        subject.blog = stub!
+        subject.publish(@clock1)
+      end
+
+      it "is a datetime" do
+        subject.pubdate.must_equal(@now)
+      end
+    end
+  end
 end
